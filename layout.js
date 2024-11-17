@@ -38,38 +38,54 @@ export const comNav = {
 }
 
 export const comTopRevenue = {
+    inject: ['topRevenue'],
     template:`
     <div class="mb-4" id="top-carousel">
-        <div id="top-film-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
-          <div class="carousel-indicators">
-            <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="0" class="active"
-              aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-          </div>
+    <div id="top-film-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+      <div class="carousel-indicators">
+        <!-- Lặp qua mảng carouselItems để tạo các indicator -->
+        <button
+          v-for="(item, index) in topRevenue"
+          :key="index"
+          :data-bs-target="'#top-film-carousel'"
+          :data-bs-slide-to="index"
+          :class="{'active': index === activeIndex}"
+          aria-label="'Slide ' + (index + 1)"
+        ></button>
+      </div>
 
-          <div class="custom-inner carousel-inner">
-            <div class="carousel-item active c-item">
-              <img src="girl_08.png" class="d-block w-100 c-img" alt="Slide 1">
-            </div>
-            <div class="carousel-item c-item">
-              <img src="girl_09.png" class="d-block w-100 c-img" alt="Slide 2">
-            </div>
-            <div class="carousel-item c-item">
-              <img src="girl_10.png" class="d-block w-100 c-img" alt="Slide 3">
-            </div>
-          </div>
-
-          <button class="carousel-control-prev" type="button" data-bs-target="#top-film-carousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#top-film-carousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
+      <div class="carousel-inner">
+        <!-- Lặp qua mảng carouselItems để tạo các slide -->
+        <div
+          v-for="(item, index) in topRevenue"
+          :key="index"
+          class="carousel-item"
+          :class="{'active': index === activeIndex}"
+        >
+          <img :src="item.image" class="d-block w-100" :alt="'Slide ' + (index + 1)">
         </div>
       </div>
+
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#top-film-carousel"
+        data-bs-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#top-film-carousel"
+        data-bs-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </div>
     `
 }
 
