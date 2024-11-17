@@ -125,7 +125,6 @@ h2 {
 #most-popular .carousel-image {
     width: 100%;
     height: 100%;
-    object-fit: contain
     transition: opacity 0.3s ease;
 }
 
@@ -195,10 +194,62 @@ h2 {
 #most-popular  .hover-card .card-img-top {
     width: auto;
     height: 180px;
-    object-fit: cover;
 }
 
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
     filter: invert(1) grayscale(100%) brightness(50%);
+}
+
+#main-search
+.card{
+    border-radius: 30px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+}
+
+#main-search
+.card-body{
+    padding: 25px;
+    margin-top: -15px;
+}
+
+
+#main-search
+h3,h5{
+    color: rgb(0, 91, 228);
+}
+
+.image-card-container {
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.card.hover-card {
+    border: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.image-card-container:hover .hover-card {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.card-img-top {
+    height: 500px;
+    object-fit: cover;
+}
+
+.badge {
+    font-size: 0.8rem;
+}
+
+.card-title {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+
+.btn-outline-primary:hover {
+    transform: scale(1.05);
 }
