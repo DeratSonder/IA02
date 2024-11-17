@@ -65,7 +65,18 @@ class MovieDBProvider {
   
           case 'get/topboxoffice': {
             const movies = await this.fetchDataIfNotCached('Movies', 'movies');
-            results = [...movies].sort((a, b) => b.boxOffice - a.boxOffice);
+            results = [...movies].sort((a, b) => {
+              const parseGross = (gross) => {
+                if (!gross) return 0; 
+                return parseInt(gross.replace(/[\$,]/g, ""), 10); 
+              };
+          
+              const grossA = parseGross(a.boxOffice?.cumulativeWorldwideGross);
+              const grossB = parseGross(b.boxOffice?.cumulativeWorldwideGross);
+          
+              return grossB - grossA; 
+            });
+          
             break;
           }
   
@@ -140,6 +151,7 @@ class MovieDBProvider {
     }
   }
   
+  export default MovieDBProvider;
   // Export for CommonJS
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = MovieDBProvider;
@@ -147,23 +159,23 @@ class MovieDBProvider {
   
 
 
-  async function main() {
-    try {
-        const db = new MovieDBProvider();
-        const movieId = 'tt0012349';
-        // const response  = await fetch('http://matuan.online:2422/api/Movies')
-        // console.log(response)
-        // const data = await response.json()
-        // console.log(data)
-        const response = await db.fetch(`search/movie/avenger?per_page=5&page=1`);
-        console.log(typeof response);
-        console.log(response);
+//   async function main() {
+//     try {
+//         const db = new MovieDBProvider();
+//         const movieId = 'tt0012349';
+//         // const response  = await fetch('http://matuan.online:2422/api/Movies')
+//         // console.log(response)
+//         // const data = await response.json()
+//         // console.log(data)
+//         const response = await db.fetch(`get/topboxoffice/?per_page=5&page=1`);
+//         console.log(typeof response);
+//         console.log(response);
         
         
         
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  }
+//     } catch (error) {
+//       console.error('Error:', error);
+//     }
+//   }
   
-  main();
+//   main();

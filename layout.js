@@ -19,7 +19,6 @@ export const comHeader = {
         </div>
       </div>
     </header>
-    
       `
 }
 
@@ -39,144 +38,177 @@ export const comNav = {
 
 export const comTopRevenue = {
     inject: ['topRevenue'],
+    data() {
+        return {
+            activeIndex: 0
+        }
+    },
+    methods: {
+
+        formatGenres(genreList){
+            // Kiểm tra nếu genreList tồn tại và không rỗng
+            if (!genreList || genreList.length === 0) {
+                return 'N/A'; // Trả về giá trị mặc định nếu genreList trống
+            }
+            return `[${genreList.map(genre => genre.value).join(', ')}]`;
+        }
+
+    },
     template:`
     <div class="mb-4" id="top-carousel">
-    <div id="top-film-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
-      <div class="carousel-indicators">
-        <!-- Lặp qua mảng carouselItems để tạo các indicator -->
-        <button
-          v-for="(item, index) in topRevenue"
-          :key="index"
-          :data-bs-target="'#top-film-carousel'"
-          :data-bs-slide-to="index"
-          :class="{'active': index === activeIndex}"
-          aria-label="'Slide ' + (index + 1)"
-        ></button>
-      </div>
-
-      <div class="carousel-inner">
-        <!-- Lặp qua mảng carouselItems để tạo các slide -->
-        <div
-          v-for="(item, index) in topRevenue"
-          :key="index"
-          class="carousel-item"
-          :class="{'active': index === activeIndex}"
-        >
-          <img :src="item.image" class="d-block w-100" :alt="'Slide ' + (index + 1)">
-        </div>
-      </div>
-
-      <button
-        class="carousel-control-prev"
-        type="button"
-        data-bs-target="#top-film-carousel"
-        data-bs-slide="prev"
-      >
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button
-        class="carousel-control-next"
-        type="button"
-        data-bs-target="#top-film-carousel"
-        data-bs-slide="next"
-      >
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
-    </div>
-  </div>
-    `
-}
-
-export const comMostPopular = {
-    template:`
-    <div class="mt-4" id="most-popular">
-        <h4 class="mx-4">Most Popular</h4>
-        <div id="most-popular-carousel" class="carousel slide" data-bs-ride="carousel">
-          <div class="carousel-inner">
-            <div class="carousel-item active">
-              <div class="cards-wrapper">
-
-                <div class="image-card-container">
-                  <img src="girl_08.png" class="carousel-image" alt="...">
-                  <div class="card hover-card">
-                    <img src="girl_08.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <p class="card-text">Some quick example </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="image-card-container">
-                  <img src="girl_09.png" class="carousel-image" alt="...">
-                  <div class="card hover-card">
-                    <img src="girl_09.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <p class="card-text">Some quick example text </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="image-card-container">
-                  <img src="girl_10.png" class="carousel-image" alt="...">
-                  <div class="card hover-card">
-                    <img src="girl_10.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <p class="card-text">Some quick example text toddddddddddddddddddd </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+        <div id="top-film-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+          <div class="carousel-indicators">
+            <button
+                v-for="(item, index) in topRevenue"
+                :key="index"
+                type="button"
+                :data-bs-target="'#top-film-carousel'"
+                :data-bs-slide-to="index"
+                :class="{'active': index === activeIndex}"
+                :aria-label="'Slide ' + (index + 1)"></button>
             </div>
-            <div class="carousel-item">
-              <div class="cards-wrapper">
-                <div class="image-card-container">
-                  <img src="girl_08.png" class="carousel-image" alt="...">
-                  <div class="card hover-card">
-                    <img src="girl_08.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <p class="card-text">Some quick example text to buil</p>
+
+          <div class="custom-inner carousel-inner">
+            
+                <div
+                    v-for="(item, index) in topRevenue"
+                    :key="index"
+                    class="carousel-item"
+                    :class="{'active': index === activeIndex}"  
+                >
+                    <img :src="item.image" class="d-block w-100 c-img" :alt="'Slide ' + (index + 1)">
+                    <div class="carousel-caption d-none d-md-block text-warning">
+                        <h5>{{item.fullTitle}}</h5>
+                        <p>{{ formatGenres(item.genreList) }}</p>
                     </div>
-                  </div>
                 </div>
-                <div class="image-card-container">
-                  <img src="girl_09.png" class="carousel-image" alt="...">
-                  <div class="card hover-card">
-                    <img src="girl_09.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <p class="card-text">Some quick example text </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="image-card-container">
-                  <img src="girl_10.png" class="carousel-image" alt="...">
-                  <div class="card hover-card">
-                    <img src="girl_10.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                        the card's content.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+                
           </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#most-popular-carousel"
-            data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+
+          <button class="carousel-control-prev" type="button" data-bs-target="#top-film-carousel" data-bs-slide="prev" style="color:black">
+            <span class="carousel-control-prev-icon"  aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
           </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#most-popular-carousel"
-            data-bs-slide="next">
+          <button class="carousel-control-next" type="button" data-bs-target="#top-film-carousel" data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>
           </button>
         </div>
       </div>
-      <!-- Second Carousel (Updated to Bootstrap 5)-->
-    </div>
     `
+}
+
+export const comMostPopular = {
+    inject: ['mostPopular'],
+    methods: {
+        chunkItems(items) {
+            let result = [];
+            for (let i = 0; i < items.length; i += 3) {
+              result.push(items.slice(i, i + 3));
+            }
+            return result;
+          }
+    },
+
+    template:`
+
+    <div class="mt-4" id="most-popular">
+    <h4 class="mx-4">Most Popular</h4>
+    <div id="most-popular-carousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+        <!-- Lặp qua số lượng các nhóm 3 phần tử -->
+        <div 
+            v-for="(group, index) in chunkItems(mostPopular)" 
+            :key="index" 
+            class="carousel-item" 
+            :class="{'active': index === 0}">
+            
+            <div class="cards-wrapper">
+            <!-- Lặp qua các item trong mỗi nhóm -->
+            <div v-for="(item, index) in group" :key="item.id" class="image-card-container">
+                <img :src="item.image" class="carousel-image" alt="...">
+                <div class="card hover-card">
+                <img :src="item.image" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <p class="card-text">{{ item.fullTitle }}</p>
+                </div>
+                </div>
+            </div>
+            </div>
+            
+        </div>
+        </div>
+
+        <!-- Điều khiển carousel -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#most-popular-carousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#most-popular-carousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    </div>
+
+    `
+}
+
+export const comTopRating = {
+    inject: ['topRating'],
+    methods: {
+        chunkItems(items) {
+            let result = [];
+            for (let i = 0; i < items.length; i += 3) {
+              result.push(items.slice(i, i + 3));
+            }
+            return result;
+          }
+    },
+
+    template:`
+
+    <div class="mt-4" id="top-rating">
+    <h4 class="mx-4">Top Rating</h4>
+    <div id="top-rating-carousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+        <!-- Lặp qua số lượng các nhóm 3 phần tử -->
+        <div 
+            v-for="(group, index) in chunkItems(topRating)" 
+            :key="index" 
+            class="carousel-item" 
+            :class="{'active': index === 0}">
+            
+            <div class="cards-wrapper">
+            <!-- Lặp qua các item trong mỗi nhóm -->
+            <div v-for="(item, index) in group" :key="item.id" class="image-card-container">
+                <img :src="item.image" class="carousel-image" alt="...">
+                <div class="card hover-card">
+                <img :src="item.image" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <p class="card-text">{{ item.fullTitle }}</p>
+                </div>
+                </div>
+            </div>
+            </div>
+            
+        </div>
+        </div>
+
+        <!-- Điều khiển carousel -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#top-rating-carousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#top-rating-carousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    </div>
+
+    `
+
 }
 
 export const comFooter = {

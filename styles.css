@@ -51,7 +51,7 @@ h2 {
 
 #top-carousel .carousel-item img {
     max-width: 100%;
-    height: auto;
+    height: 450px;
 }
 
 .custom-nav-button {
@@ -93,12 +93,14 @@ h2 {
 
 /*------------------------------------------------*/
 
+#top-rating .carousel-inner,
 #most-popular .carousel-inner {
     max-width: 900px;
     margin: 0 auto;
 }
 
-#most-popular .cards-wrapper {
+#top-rating .cards-wrapper,
+#most-popular  .cards-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -106,30 +108,35 @@ h2 {
     padding: 3rem 1rem;  
 }
 
-#most-popular .card {
+#top-rating .card,
+#most-popular  .card {
     box-shadow: 2px 6px 8px rgba(22, 22, 26, 0.18);
     border: none;
     border-radius: 0;
 }
 
+#top-rating .card img,
 #most-popular .card img {
     max-width: 100%;
     max-height: 100%;
 }
 
+#top-rating .carousel-image,
 #most-popular .carousel-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain
     transition: opacity 0.3s ease;
 }
 
+#top-rating .image-card-container ,
 #most-popular .image-card-container {
     position: relative;
     width: 500px;
     height: 200px;
 }
 
+#top-rating .hover-card ,
 #most-popular .hover-card {
     position: absolute;
     top: 50%;
@@ -144,42 +151,54 @@ h2 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+#top-rating .image-card-container:hover .carousel-image,
 #most-popular .image-card-container:hover .carousel-image {
     opacity: 0;
 }
 
+#top-rating .image-card-container:hover .hover-card,
 #most-popular .image-card-container:hover .hover-card {
     opacity: 1;
     visibility: visible;
     transform: translate(-50%, -50%) scale(1);
 }
 
+#top-rating .image-card-container:first-child .hover-card,
 #most-popular .image-card-container:first-child .hover-card {
     left: 0;
     transform: translate(0, -20%) scale(0.95);
 }
-
-#most-popular .image-card-container:first-child:hover .hover-card {
+#top-rating .image-card-container:first-child:hover .hover-card,
+#most-popular  .image-card-container:first-child:hover .hover-card {
     transform: translate(0, -50%) scale(1);
 }
 
-#most-popular .image-card-container:last-child .hover-card {
+#top-rating .image-card-container:last-child .hover-card,
+#most-popular  .image-card-container:last-child .hover-card {
     left: auto;
     right: 0;
     transform: translate(0, -50%) scale(0.95);
 }
 
-#most-popular .image-card-container:last-child:hover .hover-card {
+#top-rating .image-card-container:last-child:hover .hover-card,
+#most-popular  .image-card-container:last-child:hover .hover-card {
     transform: translate(0, -50%) scale(1);
 }
 
-#most-popular .hover-card .card-body {
+#top-rating .hover-card .card-body,
+#most-popular  .hover-card .card-body {
     background: black;
     padding: 1rem;  /* Thêm padding cho card-body */
 }
 
-#most-popular .hover-card .card-img-top {
+#top-rating .hover-card .card-img-top,
+#most-popular  .hover-card .card-img-top {
     width: auto;
     height: 180px;
     object-fit: cover;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    filter: invert(1) grayscale(100%) brightness(50%);
 }
