@@ -37,7 +37,7 @@
     </header>
 
     <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg px-2">
       <i class="fas fa-home text-dark"></i>
       <div class="flex-grow-1"></div>
       <form class="d-flex">
@@ -46,10 +46,11 @@
       </form>
     </nav>
 
+    <!-- Main -->
     <div class="column mt-2 bg-danger">
 
       <!-- First Carousel -->
-      <div class="mb-4" id = "top-carousel">
+      <div class="mb-4" id="top-carousel">
         <div id="top-film-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
           <div class="carousel-indicators">
             <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="0" class="active"
@@ -70,8 +71,8 @@
             </div>
           </div>
 
-          <button class="carousel-control-prev" type="button" data-bs-target="#top-film-carousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <button class="carousel-control-prev" type="button" data-bs-target="#top-film-carousel" data-bs-slide="prev" style="color:black">
+            <span class="carousel-control-prev-icon bg-danger"  aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
           </button>
           <button class="carousel-control-next" type="button" data-bs-target="#top-film-carousel" data-bs-slide="next">
@@ -81,9 +82,9 @@
         </div>
       </div>
 
-      
+      <!-- Second Carousel -->
       <div class="mt-4" id="most-popular">
-        <h4 class="mb-4">Most Popular</h4>
+        <h4 class="mx-4">Most Popular</h4>
         <div id="most-popular-carousel" class="carousel slide" data-bs-ride="carousel">
           <div class="carousel-inner">
             <div class="carousel-item active">
@@ -145,26 +146,30 @@
                   <div class="card hover-card">
                     <img src="girl_10.png" class="card-img-top" alt="...">
                     <div class="card-body">
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                        the card's content.</p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#most-popular-carousel" data-bs-slide="prev">
+          <button class="carousel-control-prev" type="button" data-bs-target="#most-popular-carousel"
+            data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
           </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#most-popular-carousel" data-bs-slide="next">
+          <button class="carousel-control-next" type="button" data-bs-target="#most-popular-carousel"
+            data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>
           </button>
         </div>
-      </div> 
-      <!-- Second Carousel (Updated to Bootstrap 5)
+      </div>
+      <!-- Second Carousel (Updated to Bootstrap 5)-->
+    </div>
 
-     
+
 
     <!-- Footer -->
     <footer class="bg-secondary text-white text-center py-2 mt-3">

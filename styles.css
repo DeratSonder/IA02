@@ -17,6 +17,7 @@ header {
 
 nav {
     background-color: #d8e4fc;
+    border-radius: 10px;
 }
 
 form .form-control {
@@ -53,20 +54,21 @@ h2 {
     height: auto;
 }
 
-#top-carousel .custom-nav-button {
+.custom-nav-button {
     position: relative;
     background: rgba(0, 0, 0, 0.5);
     border: none;
-    width: 40px;
-    height: 40px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
+    color: black;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
 }
 
-#top-carousel .custom-nav-button:hover {
+.custom-nav-button:hover {
     background: rgba(0, 0, 0, 0.7);
 }
 
@@ -89,101 +91,95 @@ h2 {
 
 }
 
+/*------------------------------------------------*/
+
+#most-popular .carousel-inner {
+    max-width: 900px;
+    margin: 0 auto;
+}
 
 #most-popular .cards-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-} 
+    gap: 0.5rem;
+    padding: 3rem 1rem;  
+}
+
+#most-popular .card {
+    box-shadow: 2px 6px 8px rgba(22, 22, 26, 0.18);
+    border: none;
+    border-radius: 0;
+}
 
 #most-popular .card img {
     max-width: 100%;
     max-height: 100%;
 }
 
-#most-popular .card {
-    margin: 0 0.5em;
-    box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, 0.18);
-    border: none;
-    border-radius: 0;
-}
-
-#most-popular .carousel-inner {
-    padding:  1em 1em;
-}
-
-  
-  #most-popular .carousel-image {
+#most-popular .carousel-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: opacity 0.3s ease;
-  }
-  
-  #most-popular .cards-wrapper {
-    display: flex;
-    gap: 0.5rem;
-    padding: 3rem 0;  
-  }
-  
-  #most-popular .image-card-container {
+}
+
+#most-popular .image-card-container {
     position: relative;
-    width: 1fr;
-    height: auto;
-  }
-  
-  
-  #most-popular .hover-card {
+    width: 500px;
+    height: 200px;
+}
+
+#most-popular .hover-card {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.9);
-    width: 18rem;
+    width: 20rem;
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
     z-index: 100;
-    background: white;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  }
-  
-  #most-popular .image-card-container:hover .carousel-image {
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#most-popular .image-card-container:hover .carousel-image {
     opacity: 0;
-  }
-  
-  #most-popular .image-card-container:hover .hover-card {
+}
+
+#most-popular .image-card-container:hover .hover-card {
     opacity: 1;
     visibility: visible;
-    transform: translate(-50%, -50%) scale(1.2);
-  }
-  
-  
-  #most-popular .image-card-container:first-child .hover-card {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+#most-popular .image-card-container:first-child .hover-card {
     left: 0;
-    transform: translate(0, -50%) scale(0.95);
-  }
-  
-  #most-popular .image-card-container:first-child:hover .hover-card {
-    transform: translate(0, -50%) scale(1.2);
-  }
-  
-  #most-popular .image-card-container:last-child .hover-card {
+    transform: translate(0, -20%) scale(0.95);
+}
+
+#most-popular .image-card-container:first-child:hover .hover-card {
+    transform: translate(0, -50%) scale(1);
+}
+
+#most-popular .image-card-container:last-child .hover-card {
     left: auto;
     right: 0;
     transform: translate(0, -50%) scale(0.95);
-  }
-  
-  #most-popular .image-card-container:last-child:hover .hover-card {
-    transform: translate(0, -50%) scale(1.2);
-  }
-  
+}
 
-  #most-popular .hover-card .card-body {
-    background: white;
-    padding: 1rem;
-  }
-  
- 
-  #most-popular .hover-card .card-img-top {
+#most-popular .image-card-container:last-child:hover .hover-card {
+    transform: translate(0, -50%) scale(1);
+}
+
+#most-popular .hover-card .card-body {
+    background: black;
+    padding: 1rem;  /* Thêm padding cho card-body */
+}
+
+#most-popular .hover-card .card-img-top {
+    width: auto;
+    height: 180px;
     object-fit: cover;
-  }  
+}
