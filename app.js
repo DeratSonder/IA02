@@ -62,7 +62,7 @@ export default {
                 } catch (error) {
                     console.error(error);
                 } finally {
-                    this.loading = false; y
+                    this.loading = false; 
                 }
             }, 1000); 
         },
@@ -164,25 +164,26 @@ export default {
     template: `
 
     <div class="container-custom mx-auto pt-2">
-        <!-- Header -->
-        <comHeader/>
+    <!-- Header -->
+    <comHeader />
 
-        <!-- Navigation Bar -->
-        <comNav @onSearch="searchMovies" @backHome = "loadHomePage"/>
-       
-        <div v-if = "loading" class="column mt-2">
+    <!-- Navigation Bar -->
+    <comNav @onSearch="searchMovies" @backHome="loadHomePage" />
+
+    <div v-if="loading" class="column mt-2">
         <div class="spinner-container">
-            <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
         </div>
         </div>
+    </div>
 
-        <!-- Main -->
-        <component v-else :is="content" @updateData="searchMovies" @onClickItem = "getMovie" @onClickActor="getActor" @onClickDetail="getMovie"/>
+    <!-- Main -->
+    <component v-else :is="content" @updateData="searchMovies" @onClickItem="getMovie" @onClickActor="getActor"
+        @onClickDetail="getMovie" @onClickMovie="getMovie" />
 
-        <!-- Footer -->
-        <comFooter/>
+    <!-- Footer -->
+    <comFooter />
     </div>
     `
 }

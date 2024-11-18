@@ -137,7 +137,7 @@ class MovieDBProvider {
      */
     filterMovieBySearch(movies, query) {
       return movies.filter(movie => {
-        const searchString = `${movie.title} ${movie.description} ${movie.actors}`.toLowerCase();
+        const searchString = `${movie.title} ${movie.actorList.map(actor => actor.name).join(' ')}`.toLowerCase();
         return searchString.includes(query.toLowerCase());
       });
     }
@@ -175,31 +175,7 @@ class MovieDBProvider {
   }
   
   export default MovieDBProvider;
-  // Export for CommonJS
-  if (typeof module !== 'undefined' && module.exports) {
-    module.exports = MovieDBProvider;
-  }
   
 
 
-  async function main() {
-    try {
-        const db = new MovieDBProvider();
-        const movieId = 'tt0012349';
-        // const response  = await fetch('http://matuan.online:2422/api/Reviews')
-        // console.log(response)
-        // const data = await response.json()
-        // console.log(data[0].items)
-        const response = await db.fetch(`get/reviews/${movieId}`);
-        console.log(typeof response);
-        console.log(response);
-        console.log(response.items);
-        
-        
-        
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  }
   
-  main();

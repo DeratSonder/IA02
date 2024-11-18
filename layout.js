@@ -20,7 +20,7 @@ export const comHeader = {
     `,
     data() {
         return {
-            icon: "☀️", // Icon mặc định
+            icon: "☀️", 
         };
     },
     methods: {
@@ -29,10 +29,10 @@ export const comHeader = {
             const app = document.getElementById("app");
             if (!isChecked) {
                 app.setAttribute("data-bs-theme", "light");
-                this.icon = "☀️"; // Biểu tượng light mode
+                this.icon = "☀️"; 
             } else {
                 app.setAttribute("data-bs-theme", "dark");
-                this.icon = "🌙"; // Biểu tượng dark mode
+                this.icon = "🌙"; 
             }
         },
     },
@@ -86,7 +86,6 @@ export const comNav = {
                 <button class="btn btn-outline-primary" type="submit" @click="handleSearch">Search</button>
             </form>
         </nav>
-
     `
 }
 
@@ -156,125 +155,106 @@ export const comTopRevenue = {
     `
 }
 
-export const comMostPopular = {
-    inject: ['mostPopular'],
-    methods: {
-        onClickItem(id) {
-            this.$emit('onClickItem', id)
-        },
-        chunkItems(items) {
-            let result = [];
-            for (let i = 0; i < items.length; i += 3) {
-                result.push(items.slice(i, i + 3));
+export const createCarouselComponent = (options) => {
+    const { 
+        sectionTitle, 
+        carouselId, 
+        injectionKey,
+        emitEventName = 'onClickItem'
+    } = options;
+
+    return {
+        props: {
+            carouselId: {
+                type: String,
+                required: true
             }
-            return result;
-        }
-    },
-
-    template: `
-
-    <div class="mt-4" id="most-popular">
-    <h4 class="mx-4">Most Popular</h4>
-    <div id="most-popular-carousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-        <!-- Lặp qua số lượng các nhóm 3 phần tử -->
-        <div 
-            v-for="(group, index) in chunkItems(mostPopular)" 
-            :key="index" 
-            class="carousel-item" 
-            :class="{'active': index === 0}">
-            
-            <div class="cards-wrapper">
-            <!-- Lặp qua các item trong mỗi nhóm -->
-            <div v-for="(item, index) in group" :key="item?.id" class="image-card-container" @click="onClickItem(item.id)">
-                <img :src="item.image" class="carousel-image" alt="...">
-                <div class="card hover-card">
-                <img :src="item.image" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <p class="card-text">{{ item?.fullTitle }}</p>
+        },
+        inject: [injectionKey],
+        mounted() {
+            this.$nextTick(() => {
+                if (window.bootstrap && window.bootstrap.Carousel) {
+                    const carouselElement = this.$refs[carouselId];
+                    new window.bootstrap.Carousel(carouselElement, {
+                        interval: 5000,  // Optional: add sliding interval
+                        ride: true
+                    });
+                }
+            });
+        },
+        methods: {
+            onClickItem(id) {
+                this.$emit(emitEventName, id);
+            },
+            chunkItems(items) {
+                let result = [];
+                for (let i = 0; i < items.length; i += 3) {
+                    result.push(items.slice(i, i + 3));
+                }
+                return result;
+            }
+        },
+        computed: {
+            items() {
+                return this[injectionKey] || [];
+            }
+        },
+        template: `
+        <div class="mt-4" id="carousel-general">
+            <h4 class="mx-4">${sectionTitle}</h4>
+            <div ref="carousel" :id="carouselId + '-carousel'" class="carousel slide">
+                <div class="carousel-inner">
+                    <div 
+                        v-for="(group, index) in chunkItems(items)" 
+                        :key="index" 
+                        class="carousel-item" 
+                        :class="{'active': index === 0}">
+                        <div class="cards-wrapper">
+                            <div v-for="(item, index) in group" :key="item?.id" 
+                                 class="image-card-container" 
+                                 @click="onClickItem(item.id)">
+                                <img :src="item.image" class="carousel-image" alt="...">
+                                <div class="card hover-card">
+                                    <img :src="item.image" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <p class="card-text">{{ item?.fullTitle }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                </div>
-            </div>
-            </div>
-            
-        </div>
-        </div>
 
-        <!-- Điều khiển carousel -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#most-popular-carousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#most-popular-carousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-        </button>
-    </div>
-    </div>
-
-    `
+                <button class="carousel-control-prev" type="button" 
+                        :data-bs-target="'#' + carouselId + '-carousel'" 
+                        data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" 
+                        :data-bs-target="'#' + carouselId + '-carousel'" 
+                        data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+        `
+    }
 }
 
-export const comTopRating = {
-    inject: ['topRating'],
+export const comMostPopular = createCarouselComponent({
+    sectionTitle: 'Most Popular',
+    carouselId: 'most-popular',
+    injectionKey: 'mostPopular'
+});
 
-    methods: {
-        onClickItem(id) {
-            this.$emit('onClickItem', id)
-        },
-        chunkItems(items) {
-            let result = [];
-            for (let i = 0; i < items.length; i += 3) {
-                result.push(items.slice(i, i + 3));
-            }
-            return result;
-        }
-    },
+export const comTopRating = createCarouselComponent({
+    sectionTitle: 'Top Rating',
+    carouselId: 'top-rating',
+    injectionKey: 'topRating'
+});
 
-    template: `
-
-    <div class="mt-4" id="top-rating">
-    <h4 class="mx-4">Top Rating</h4>
-    <div id="top-rating-carousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-        <!-- Lặp qua số lượng các nhóm 3 phần tử -->
-        <div 
-            v-for="(group, index) in chunkItems(topRating)" 
-            :key="index" 
-            class="carousel-item" 
-            :class="{'active': index === 0}">
-            
-            <div class="cards-wrapper">
-            <!-- Lặp qua các item trong mỗi nhóm -->
-            <div v-for="(item, index) in group" :key="item.id" class="image-card-container" @click="onClickItem(item.id)">
-                <img :src="item.image" class="carousel-image" alt="...">
-                <div class="card hover-card">
-                <img :src="item.image" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <p class="card-text">{{ item?.fullTitle }}</p>
-                </div>
-                </div>
-            </div>
-            </div>
-            
-        </div>
-        </div>
-
-        <!-- Điều khiển carousel -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#top-rating-carousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#top-rating-carousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-        </button>
-    </div>
-    </div>
-
-    `
-
-}
 
 export const comFooter = {
     template: `
@@ -283,7 +263,6 @@ export const comFooter = {
     </footer>
     `
 }
-
 
 export const comMainHome = {
     components: {
@@ -301,10 +280,9 @@ export const comMainHome = {
         `
     <div class="column mt-2">
     <comTopRevenue @onClickItem = "onClickItem"/>
-    <comMostPopular @onClickItem = "onClickItem"/>
-    <comTopRating @onClickItem = "onClickItem"/>
+    <comMostPopular @onClickItem = "onClickItem" :carouselId="'most-popular'" :sectionTitle="'Most Popular'" :injectionKey="'mostPopular'" />
+    <comTopRating @onClickItem = "onClickItem" :carouselId="'top-rating'" :sectionTitle="'Top Rating'" :injectionKey="'topRating'" />
     </div>
-    
     `
 }
 
@@ -312,9 +290,8 @@ export const comMainHome = {
 export const comMainSearch = {
     inject: ['search', 'page', 'total_pages', 'searchQuery'],
 
+
     computed: {
-
-
         displayedPages() {
             const current = this.page;
             const total = this.total_pages;
@@ -365,11 +342,6 @@ export const comMainSearch = {
         }
     },
 
-    mounted() {
-        console.log('Main search total pages:', this.total_pages);
-        console.log('Search query:', this.searchQuery);
-    },
-
     template: `
         <div class="column mt-2" id="main-search">
             <div v-if="!hasResults" class="alert alert-info text-center my-4">
@@ -386,10 +358,10 @@ export const comMainSearch = {
                                     <img :src="item.image" 
                                          class="card-img-top" 
                                          alt="Movie poster"
-                                         onerror="this.src='/path/to/placeholder.jpg'">
+                                         >
                                     
                                     <!-- Length badge -->
-                                    <span class="position-absolute bottom-0 start-0 bg-dark m-2">
+                                    <span class="text-white px-1 position-absolute bottom-0 start-0 bg-dark m-2">
                                         {{ item.runtimeStr || 'N/A' }}
                                     </span>
                                     
@@ -408,7 +380,7 @@ export const comMainSearch = {
                                         <span class="badge bg-secondary">{{ item?.year }}</span>
                                         <button @click="onClickItem(item?.id)"
                                                 class="btn btn-sm btn-outline-primary">
-                                            Chi tiết
+                                            Details
                                         </button>
                                     </div>
                                 </div>
@@ -418,7 +390,6 @@ export const comMainSearch = {
                 </div>
 
                 <!-- Pagination section -->
-                <!-- Phân trang chỉ hiển thị khi có kết quả -->
                 <div v-if="total_pages > 1" class="d-flex justify-content-center mt-auto">
                     <ul class="pagination">
                         <!-- Previous button -->
@@ -667,7 +638,7 @@ export const comMovieDetail = {
     </div>
 
       <!-- Review Section -->
-        <h3 class="m-4">Reviews</h3>
+        <h3 class="my-4">Reviews</h3>
         <div class="scroll-reviews col-lg-8 m-2">
             <div class="review-card" v-for="(review, index) in reviews" :key="index">
                 <div class="review-header">
@@ -712,6 +683,11 @@ export const comActorDetail = {
     },
 
     methods: {
+
+        onClickMovie(id){
+            this.$emit('onClickMovie', id)
+        },
+
         formatDate(dateString) {
 
             if (!dateString) return "";
@@ -754,7 +730,7 @@ export const comActorDetail = {
         <!-- Actor Info Section -->
         <div class="row mb-5">
             <div class="col-md-4 text-center">
-                <img :src="actor?.image" alt="actor?.name" class="actor-img mb-3">
+                <img :src="actor?.image" alt="Avatar" class="actor-img mb-3">
             </div>
             <div class="col-md-8">
                 <h1 class="display-4">{{actor?.name}}</h1>
@@ -762,7 +738,7 @@ export const comActorDetail = {
                 <hr>
                 <div class="row">
                     <div class="col-md-6">
-                        <p><strong>Birth Date:</strong> {{formatDate(actor?.birthday)}}</p>
+                        <p><strong>Birth Date:</strong> {{formatDate(actor?.birthDate)}}</p>
                     </div>
                     <div class="col-md-6">
                         <p><strong>Awards:</strong> {{actor?.awards}}</p>
@@ -784,9 +760,9 @@ export const comActorDetail = {
         <div class="row" id="movies">
 
             <div class="row">
-                <div class="col-md-4" v-for="movie in actorMovies" :key="movie.id">
+                <div class="col-md-4" v-for="movie in actorMovies" :key="movie.id" @click="onClickMovie(movie.id)">
                     <div class="card movie-card">
-                        <img :src="movie.image" class="card-img-top movie-img" :alt="movie?.fullTitle">
+                        <img :src="movie.image" class="card-img-top movie-img" :alt="Poster">
                         <div class="card-body">
                             <h5 class="card-title">{{ movie?.title }}</h5>
                             <p class="card-text">{{ movie?.plot }}</p>
