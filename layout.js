@@ -1,28 +1,43 @@
 import MovieDBProvider, * as DBProvier from './DBProvider.js'
 
 export const comHeader = {
+    template: `
+      <header class="text-black py-3 d-flex justify-content-between align-items-center ">
+        <div class="ps-3">
+          <span id="left-text">22120410</span>
+        </div>
+        <div class="text-center flex-grow-1">
+          <h4 class="mb-0" id="center-text">Movie Info</h4>
+        </div>
+        <div class="pe-3 d-flex align-items-center">
+          <div class="form-check form-switch me-1">
+            <input type="checkbox" class="form-check-input" id="themeSwitch" @change="toggleTheme">
+            <label class="form-check-label" for="themeSwitch"></label>
+          </div>
+          <div id="icon">{{ icon }}</div>
+        </div>
+      </header>
+    `,
+    data() {
+        return {
+            icon: "☀️", // Icon mặc định
+        };
+    },
+    methods: {
+        toggleTheme(event) {
+            const isChecked = event.target.checked;
+            const app = document.getElementById("app");
+            if (!isChecked) {
+                app.setAttribute("data-bs-theme", "light");
+                this.icon = "☀️"; // Biểu tượng light mode
+            } else {
+                app.setAttribute("data-bs-theme", "dark");
+                this.icon = "🌙"; // Biểu tượng dark mode
+            }
+        },
+    },
+};
 
-    template:
-        `
-      <header class="text-black py-3 d-flex justify-content-between align-items-center">
-      <div class="ps-3">
-        <span id="left-text">22120410</span>
-      </div>
-      <div class="text-center flex-grow-1">
-        <h4 class="mb-0" id="center-text">Movie Info</h4>
-      </div>
-      <div class="pe-3 d-flex align-items-center">
-        <div class="form-check form-switch me-1">
-          <input type="checkbox" class="form-check-input" id="themeSwitch">
-          <label class="form-check-label" for="themeSwitch"></label>
-        </div>
-        <div>
-          ⚙️
-        </div>
-      </div>
-    </header>
-      `
-}
 
 export const comNav = {
     inject: ['page'],
@@ -55,7 +70,7 @@ export const comNav = {
         }
     },
     template: `
-        <nav class="navbar navbar-expand-lg px-2">
+        <nav class="navbar navbar-expand-lg p-3">
           
             <i class="fas fa-home text-dark" @click="backHome"></i>
             <div class="flex-grow-1"></div>
@@ -89,9 +104,8 @@ export const comTopRevenue = {
         },
 
         formatGenres(genreList) {
-            // Kiểm tra nếu genreList tồn tại và không rỗng
             if (!genreList || genreList.length === 0) {
-                return 'N/A'; // Trả về giá trị mặc định nếu genreList trống
+                return 'N/A';
             }
             return `[${genreList.map(genre => genre.value).join(', ')}]`;
         }
@@ -265,7 +279,7 @@ export const comTopRating = {
 export const comFooter = {
     template: `
     <footer class="bg-secondary text-white text-center py-2 mt-3">
-      <p>&copy; 2024 My Website. All rights reserved.</p>
+      <p>&copy; 2024 Derat Website. All rights reserved.</p>
     </footer>
     `
 }
@@ -307,7 +321,7 @@ export const comMainSearch = {
             const delta = 2;
             let pages = [];
 
-            if (!total) return pages; // Trả về mảng rỗng nếu không có trang
+            if (!total) return pages;
 
             pages.push(1);
 
@@ -343,7 +357,7 @@ export const comMainSearch = {
             this.$emit('onClickItem', id)
         },
         updateData(query, page) {
-            if (!query) return; // Ngăn chặn gọi API khi không có query
+            if (!query) return;
             this.$emit('updateData', query, page);
         },
         userDetails(id) {
@@ -460,7 +474,7 @@ export const comMovieDetail = {
     data() {
         return {
             reviews: [],
-            maxLength: 300 // Số ký tự tối đa hiển thị ban đầu
+            maxLength: 300
         }
     },
     mounted() {
@@ -632,7 +646,7 @@ export const comMovieDetail = {
         <div class="similar-films">
         <h3 class="mb-4">Similar Films</h3>
         <div class="similar-list d-flex flex-row " id="similars">
-            <div class="similar-item mx-2" v-for="(item, index) in movie?.similars" :key="index" @click="onClickDetail(movie?.similars[index].id)">
+            <div class="similar-item mx-2" v-for="(item, index) in movie?.similars" :key="index" @click="onClickDetail(item?.id)">
                 <div class="image-card-container">
                     <div class="card hover-card">
                         <div class="position-relative">
@@ -658,7 +672,7 @@ export const comMovieDetail = {
             <div class="review-card" v-for="(review, index) in reviews" :key="index">
                 <div class="review-header">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h3 class="h5 mb-0">"{{ review.title }}"</h3>
+                        <h5 class="h5 mb-0" style="color:black">{{ review.title }}</h5>
                         <span class="review-date">{{ review.date }}</span>
                         <span class="review-date">Rate: {{ review?.rate || "NA"}}/10</span>
                     </div>
@@ -680,7 +694,6 @@ export const comMovieDetail = {
         </div>
     </div>
             
-    </div>
     
     `
 
@@ -795,7 +808,7 @@ export const comActorDetail = {
                 </li>
 
                 <!-- Page numbers with ellipsis -->
-                <template v-for="pageNum in displayedPages">
+                <template v-for="pageNum in total_pages">
                     <li v-if="pageNum === '...'" :key="'ellipsis-' + pageNum" class="page-item disabled">
                         <span class="page-link">...</span>
                     </li>

@@ -1,5 +1,7 @@
-import { comHeader, comNav, comTopRevenue, comMostPopular, 
-    comTopRating, comFooter, comMainHome, comMainSearch, comMovieDetail, comActorDetail } from "./layout.js"
+import {
+    comHeader, comNav, comTopRevenue, comMostPopular,
+    comTopRating, comFooter, comMainHome, comMainSearch, comMovieDetail, comActorDetail
+} from "./layout.js"
 import { computed } from "vue"
 import MovieDBProvider, * as DBProvier from './DBProvider.js'
 
@@ -17,7 +19,9 @@ export default {
             page: 1,
             per_page: 6,
             total_pages: 0,
-            content: 'comMainHome'
+            content: 'comMainHome',
+            loading: false,
+
 
         }
     },
@@ -45,16 +49,22 @@ export default {
     methods: {
 
         async loadHomePage() {
-            const db = new MovieDBProvider();
-            try {
-                this.getRevenueMovies(db)
-                this.getMostPopularMovies(db);
-                this.getTopRatedMovies(db);
-                this.content = 'comMainHome'
-                console.log(this.page)
-            } catch (error) {
-                console.error(error);
-            }
+            this.loading = true; 
+            
+            setTimeout(async () => {
+                const db = new MovieDBProvider();
+                try {
+                    this.getRevenueMovies(db);
+                    this.getMostPopularMovies(db);
+                    this.getTopRatedMovies(db);
+                    this.content = 'comMainHome';
+                    console.log(this.page);
+                } catch (error) {
+                    console.error(error);
+                } finally {
+                    this.loading = false; y
+                }
+            }, 1000); 
         },
 
         async getRevenueMovies(db) {
@@ -110,7 +120,7 @@ export default {
             }
         },
 
-        async getMovie(id){
+        async getMovie(id) {
             try {
                 const db = new MovieDBProvider();
                 const result = await db.fetch(`detail/movie/${id}`);
@@ -122,7 +132,7 @@ export default {
             }
         },
 
-        async getActor(id){
+        async getActor(id) {
             try {
                 const db = new MovieDBProvider();
                 const result = await db.fetch(`detail/name/${id}`);
@@ -153,15 +163,23 @@ export default {
 
     template: `
 
-    <div class="container-custom mx-auto">
+    <div class="container-custom mx-auto pt-2">
         <!-- Header -->
         <comHeader/>
 
         <!-- Navigation Bar -->
         <comNav @onSearch="searchMovies" @backHome = "loadHomePage"/>
-        
+       
+        <div v-if = "loading" class="column mt-2">
+        <div class="spinner-container">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        </div>
+
         <!-- Main -->
-        <component :is="content" @updateData="searchMovies" @onClickItem = "getMovie" @onClickActor="getActor" @onClickDetail="getMovie"/>
+        <component v-else :is="content" @updateData="searchMovies" @onClickItem = "getMovie" @onClickActor="getActor" @onClickDetail="getMovie"/>
 
         <!-- Footer -->
         <comFooter/>
