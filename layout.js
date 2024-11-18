@@ -35,25 +35,25 @@ export const comNav = {
     methods: {
 
         onSearch(query, page) {
-          this.$emit('onSearch', query, page)
+            this.$emit('onSearch', query, page)
         },
-    
-        backHome(){
-          this.$emit('backHome')
+
+        backHome() {
+            this.$emit('backHome')
         },
-    
+
         handleSearch(event) {
-          event.preventDefault();
-          this.searchError = ''
-          try {
-        
-            this.onSearch(this.searchInput, 1) ;
-          } catch (error) {
-            this.searchError = 'An error occurred while searching. Please try again.'
-            console.log(error)
-          }
+            event.preventDefault();
+            this.searchError = ''
+            try {
+
+                this.onSearch(this.searchInput, 1);
+            } catch (error) {
+                this.searchError = 'An error occurred while searching. Please try again.'
+                console.log(error)
+            }
         }
-      },
+    },
     template: `
         <nav class="navbar navbar-expand-lg px-2">
           
@@ -84,7 +84,7 @@ export const comTopRevenue = {
     },
     methods: {
 
-        onClickItem(id){
+        onClickItem(id) {
             this.$emit('onClickItem', id)
         },
 
@@ -145,7 +145,7 @@ export const comTopRevenue = {
 export const comMostPopular = {
     inject: ['mostPopular'],
     methods: {
-        onClickItem(id){
+        onClickItem(id) {
             this.$emit('onClickItem', id)
         },
         chunkItems(items) {
@@ -203,9 +203,9 @@ export const comMostPopular = {
 
 export const comTopRating = {
     inject: ['topRating'],
-    
+
     methods: {
-        onClickItem(id){
+        onClickItem(id) {
             this.$emit('onClickItem', id)
         },
         chunkItems(items) {
@@ -277,8 +277,8 @@ export const comMainHome = {
         comMostPopular,
         comTopRating,
     },
-    methods:{
-        onClickItem(id){
+    methods: {
+        onClickItem(id) {
             this.$emit('onClickItem', id)
         }
     },
@@ -297,7 +297,7 @@ export const comMainHome = {
 
 export const comMainSearch = {
     inject: ['search', 'page', 'total_pages', 'searchQuery'],
-    
+
     computed: {
 
 
@@ -332,14 +332,14 @@ export const comMainSearch = {
 
             return pages;
         },
-        
+
         hasResults() {
             return this.search && this.search.length > 0;
         }
     },
 
     methods: {
-        onClickItem(id){
+        onClickItem(id) {
             this.$emit('onClickItem', id)
         },
         updateData(query, page) {
@@ -457,47 +457,84 @@ export const comMainSearch = {
 
 export const comMovieDetail = {
     inject: ['movie'],
-    methods:{
-        onClickActor(id){
+    data() {
+        return {
+            reviews: [],
+            maxLength: 300 // Số ký tự tối đa hiển thị ban đầu
+        }
+    },
+    mounted() {
+        this.getReviews(this.movie.id);
+    },
+
+    methods: {
+        onClickActor(id) {
             this.$emit('onClickActor', id);
         },
 
-        formatDate(dateString) {
-            // Tách chuỗi ngày theo định dạng "YYYY-MM-D"
-            if(!dateString) return "";
+        onClickDetail(id) {
+            this.$emit('onClickDetail', id);
+        },
 
-            const [year, month, day] = dateString.split('-');
-            
-            // Danh sách tên tháng
-            const months = [
-              "January", "February", "March", "April", "May", "June",
-              "July", "August", "September", "October", "November", "December"
-            ];
-            
-            // Lấy tên tháng từ chỉ mục (month - 1 vì mảng bắt đầu từ 0)
-            const monthName = months[parseInt(month, 10) - 1];
-          
-            // Trả về chuỗi định dạng "Month Day, Year"
-            return `${monthName} ${parseInt(day, 10)}, ${year}`;
-          },
-
-          trimString(input) {
-
-            if(!input) return "";
-            
-            if (input.length <= 6) {
-              return ""; // Chuỗi quá ngắn, trả về chuỗi rỗng
+        toggleReadMore(index) {
+            if (this.reviews[index].isExpanded === undefined) {
+                this.$set(this.reviews[index], 'isExpanded', true);
+            } else {
+                this.reviews[index].isExpanded = !this.reviews[index].isExpanded;
             }
-            return input.slice(3, -4); // Loại bỏ 3 ký tự đầu và cuối
-          },
+        },
 
-          directors(){
-           return this.movie.directorList.map(director => director.name).join(", ")
-          }
-          
+        shouldShowReadMore(content) {
+            return content && content.length > this.maxLength;
+        },
+
+        getDisplayContent(content, isExpanded) {
+            if (!content) return '';
+            if (isExpanded || content.length <= this.maxLength) {
+                return content;
+            }
+            return content.slice(0, this.maxLength) + '...';
+        },
+
+        async getReviews(id) {
+            try {
+                const db = new MovieDBProvider();
+                const result = await db.fetch(`get/reviews/${id}`);
+                this.reviews = result.items.map(review => ({
+                    ...review,
+                    isExpanded: false
+                }));
+                console.log(this.reviews);
+            } catch (error) {
+                console.error(error);
+            }
+        },
+
+        formatDate(dateString) {
+            if (!dateString) return "";
+            const [year, month, day] = dateString.split('-');
+            const months = [
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+            const monthName = months[parseInt(month, 10) - 1];
+            return `${monthName} ${parseInt(day, 10)}, ${year}`;
+        },
+
+        trimString(input) {
+            if (!input) return "";
+            if (input.length <= 6) {
+                return "";
+            }
+            return input.slice(3, -4);
+        },
+
+        directors() {
+            return this.movie.directorList.map(director => director.name).join(", ")
+        }
     },
     template:
-    `
+        `
      <div class="column mt-2">
 
   
@@ -592,22 +629,57 @@ export const comMovieDetail = {
         </div>
 
         <!-- Similar Movies -->
-        <h3 class="mb-4">Similar Movies</h3>
-        <div class="row">
-            <div class="col-md-2 mb-3">
-                <div class="card h-100">
-                    <img src="https://m.media-amazon.com/images/M/MV5BZDc4NjE1M2EtNWVjNi00NDRkLTg5MzctNzJhMGQ4Yjc5YzcyXkEyXkFqcGdeQXVyMDI2NDg0NQ@@._V1_Ratio0.7150_AL_.jpg" 
-                         class="card-img-top" 
-                         alt="The Circus">
-                    <div class="card-body">
-                        <h6 class="card-title">The Circus</h6>
-                        <span class="badge badge-warning">IMDb: 8.1</span>
+        <div class="similar-films">
+        <h3 class="mb-4">Similar Films</h3>
+        <div class="similar-list d-flex flex-row " id="similars">
+            <div class="similar-item mx-2" v-for="(item, index) in movie?.similars" :key="index" @click="onClickDetail(movie?.similars[index].id)">
+                <div class="image-card-container">
+                    <div class="card hover-card">
+                        <div class="position-relative">
+                            <img
+                                :src="item.image"
+                                class="card-img-top"
+                                alt="Movie poster"
+                                onerror="this.src='/path/to/placeholder.jpg'"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title text-truncate">{{ item?.title }}</h6>
+                        </div>
                     </div>
                 </div>
             </div>
-            <!-- Add more similar movies here -->
         </div>
-     
+    </div>
+
+      <!-- Review Section -->
+        <h3 class="m-4">Reviews</h3>
+        <div class="scroll-reviews col-lg-8 m-2">
+            <div class="review-card" v-for="(review, index) in reviews" :key="index">
+                <div class="review-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="h5 mb-0">"{{ review.title }}"</h3>
+                        <span class="review-date">{{ review.date }}</span>
+                        <span class="review-date">Rate: {{ review?.rate || "NA"}}/10</span>
+                    </div>
+                    <div class="small mt-1">by {{ review.username }}</div>
+                </div>
+                <div class="review-content">
+                    <div class="content-text" :class="{'collapsed': !review.isExpanded && shouldShowReadMore(review.content)}">
+                        {{ getDisplayContent(review.content, review.isExpanded) }}
+                    </div>
+                </div>
+                <span 
+                    v-if="shouldShowReadMore(review.content)"
+                    class="read-more" 
+                    @click="toggleReadMore(index)"
+                >
+                    {{ review.isExpanded ? 'Read less' : 'Read more' }}
+                </span>
+            </div>
+        </div>
+    </div>
+            
     </div>
     
     `
@@ -621,35 +693,31 @@ export const comActorDetail = {
         return {
             actorMovies: [],
             page: 1,
-            total_pages:0
+            total_pages: 0,
+            per_page: 3
         }
     },
-   
 
-    methods:{
+    methods: {
         formatDate(dateString) {
-            // Tách chuỗi ngày theo định dạng "YYYY-MM-D"
-            if(!dateString) return "";
 
+            if (!dateString) return "";
             const [year, month, day] = dateString.split('-');
-            
-            // Danh sách tên tháng
-            const months = [
-              "January", "February", "March", "April", "May", "June",
-              "July", "August", "September", "October", "November", "December"
-            ];
-            
-            // Lấy tên tháng từ chỉ mục (month - 1 vì mảng bắt đầu từ 0)
-            const monthName = months[parseInt(month, 10) - 1];
-          
-            // Trả về chuỗi định dạng "Month Day, Year"
-            return `${monthName} ${parseInt(day, 10)}, ${year}`;
-          },
 
-        async getMoviesOfActor(id, page){
+            const months = [
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+
+            const monthName = months[parseInt(month, 10) - 1];
+
+            return `${monthName} ${parseInt(day, 10)}, ${year}`;
+        },
+
+        async getMoviesOfActor(id, page) {
             try {
                 const db = new MovieDBProvider();
-                const result = await db.fetch(`get/moviesofactor/${id}?per_page=3&page=${page}`);
+                const result = await db.fetch(`get/moviesofactor/${id}?per_page=${this.per_page}&page=${page}`);
                 this.actorMovies = result.items;
                 console.log("Actor Movies: ", this.actorMovies);
                 this.page = result.page;
@@ -667,9 +735,10 @@ export const comActorDetail = {
         this.getMoviesOfActor(this.actor?.id, 1);
     },
     template:
-    `
+        `
     <div class="column mt-2">
 
+        <!-- Actor Info Section -->
         <div class="row mb-5">
             <div class="col-md-4 text-center">
                 <img :src="actor?.image" alt="actor?.name" class="actor-img mb-3">
@@ -689,7 +758,7 @@ export const comActorDetail = {
             </div>
         </div>
 
-        <!-- Biography Section -->
+        <!-- Summary Section -->
         <div class="bio-section">
             <h2 class="mb-4">Summary</h2>
             <p class="lead">
@@ -697,6 +766,7 @@ export const comActorDetail = {
             </p>
         </div>
 
+        <!-- Films Section -->
         <h2 class="mb-4">Films</h2>
         <div class="row" id="movies">
 
@@ -713,6 +783,7 @@ export const comActorDetail = {
             </div>
         </div>
 
+        <!-- Pagination -->
         <div v-if="total_pages > 1" class="d-flex justify-content-center mt-auto">
             <ul class="pagination">
                 <!-- Previous button -->
@@ -746,8 +817,6 @@ export const comActorDetail = {
             </ul>
         </div>
     </div>
-
-
-    
     `
 }
+

@@ -161,7 +161,7 @@ export default {
         <comNav @onSearch="searchMovies" @backHome = "loadHomePage"/>
         
         <!-- Main -->
-        <component :is="content" @updateData="searchMovies" @onClickItem = "getMovie" @onClickActor="getActor"/>
+        <component :is="content" @updateData="searchMovies" @onClickItem = "getMovie" @onClickActor="getActor" @onClickDetail="getMovie"/>
 
         <!-- Footer -->
         <comFooter/>

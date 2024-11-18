@@ -53,6 +53,13 @@ class MovieDBProvider {
             return movies.find(m => m.id === movieId) || null;
           }
 
+          case 'get/reviews': {
+            const reviews = await this.fetchDataIfNotCached('Reviews', 'reviews');
+            const movieID = params.split('?')[0];
+            results = reviews.filter(review => review.movieId === movieID)[0];
+            return results
+          }
+
           case 'detail/name':{
             const actors = await this.fetchDataIfNotCached('Names', 'names');
             const actorId = params.split('?')[0];
@@ -178,14 +185,15 @@ class MovieDBProvider {
   async function main() {
     try {
         const db = new MovieDBProvider();
-        const movieId = 'nm0000122';
-        // const response  = await fetch('http://matuan.online:2422/api/Movies')
+        const movieId = 'tt0012349';
+        // const response  = await fetch('http://matuan.online:2422/api/Reviews')
         // console.log(response)
         // const data = await response.json()
-        // console.log(data)
-        const response = await db.fetch(`get/moviesofactor/${movieId}?per_page=3&page=1`);
+        // console.log(data[0].items)
+        const response = await db.fetch(`get/reviews/${movieId}`);
         console.log(typeof response);
         console.log(response);
+        console.log(response.items);
         
         
         
