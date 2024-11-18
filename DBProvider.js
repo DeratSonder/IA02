@@ -52,6 +52,22 @@ class MovieDBProvider {
             const movieId = params.split('?')[0];
             return movies.find(m => m.id === movieId) || null;
           }
+
+          case 'detail/name':{
+            const actors = await this.fetchDataIfNotCached('Names', 'names');
+            const actorId = params.split('?')[0];
+            return actors.find(a => a.id === actorId) || null;
+          }
+
+          case 'get/moviesofactor': {
+            const movies = await this.fetchDataIfNotCached('Movies', 'movies'); 
+            const actorId = params.split('?')[0]; 
+          
+            results = movies.filter(movie => 
+            movie.actorList.some(actor => actor.id === actorId));
+          
+            break;
+          }
   
           case 'get/top50': {
             results = await this.fetchDataIfNotCached('Top50Movies', 'top50movies');
@@ -159,23 +175,23 @@ class MovieDBProvider {
   
 
 
-//   async function main() {
-//     try {
-//         const db = new MovieDBProvider();
-//         const movieId = 'tt0012349';
-//         // const response  = await fetch('http://matuan.online:2422/api/Movies')
-//         // console.log(response)
-//         // const data = await response.json()
-//         // console.log(data)
-//         const response = await db.fetch(`get/topboxoffice/?per_page=5&page=1`);
-//         console.log(typeof response);
-//         console.log(response);
+  async function main() {
+    try {
+        const db = new MovieDBProvider();
+        const movieId = 'nm0000122';
+        // const response  = await fetch('http://matuan.online:2422/api/Movies')
+        // console.log(response)
+        // const data = await response.json()
+        // console.log(data)
+        const response = await db.fetch(`get/moviesofactor/${movieId}?per_page=3&page=1`);
+        console.log(typeof response);
+        console.log(response);
         
         
         
-//     } catch (error) {
-//       console.error('Error:', error);
-//     }
-//   }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
   
-//   main();
+  main();

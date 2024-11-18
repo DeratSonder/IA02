@@ -100,16 +100,16 @@ h2 {
 }
 
 #top-rating .cards-wrapper,
-#most-popular  .cards-wrapper {
+#most-popular .cards-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
-    padding: 3rem 1rem;  
+    padding: 3rem 1rem;
 }
 
 #top-rating .card,
-#most-popular  .card {
+#most-popular .card {
     box-shadow: 2px 6px 8px rgba(22, 22, 26, 0.18);
     border: none;
     border-radius: 0;
@@ -128,14 +128,14 @@ h2 {
     transition: opacity 0.3s ease;
 }
 
-#top-rating .image-card-container ,
+#top-rating .image-card-container,
 #most-popular .image-card-container {
     position: relative;
     width: 500px;
     height: 200px;
 }
 
-#top-rating .hover-card ,
+#top-rating .hover-card,
 #most-popular .hover-card {
     position: absolute;
     top: 50%;
@@ -167,31 +167,33 @@ h2 {
     left: 0;
     transform: translate(0, -20%) scale(0.95);
 }
+
 #top-rating .image-card-container:first-child:hover .hover-card,
-#most-popular  .image-card-container:first-child:hover .hover-card {
+#most-popular .image-card-container:first-child:hover .hover-card {
     transform: translate(0, -50%) scale(1);
 }
 
 #top-rating .image-card-container:last-child .hover-card,
-#most-popular  .image-card-container:last-child .hover-card {
+#most-popular .image-card-container:last-child .hover-card {
     left: auto;
     right: 0;
     transform: translate(0, -50%) scale(0.95);
 }
 
 #top-rating .image-card-container:last-child:hover .hover-card,
-#most-popular  .image-card-container:last-child:hover .hover-card {
+#most-popular .image-card-container:last-child:hover .hover-card {
     transform: translate(0, -50%) scale(1);
 }
 
 #top-rating .hover-card .card-body,
-#most-popular  .hover-card .card-body {
+#most-popular .hover-card .card-body {
     background: black;
-    padding: 1rem;  /* Thêm padding cho card-body */
+    padding: 1rem;
+    /* Thêm padding cho card-body */
 }
 
 #top-rating .hover-card .card-img-top,
-#most-popular  .hover-card .card-img-top {
+#most-popular .hover-card .card-img-top {
     width: auto;
     height: 180px;
 }
@@ -201,23 +203,18 @@ h2 {
     filter: invert(1) grayscale(100%) brightness(50%);
 }
 
-#main-search
-.card{
+#main-search .card {
     border-radius: 30px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
 }
 
-#main-search
-.card-body{
+#main-search .card-body {
     padding: 25px;
     margin-top: -15px;
 }
 
 
-#main-search
-h3,h5{
-    color: rgb(0, 91, 228);
-}
+
 
 .image-card-container {
     position: relative;
@@ -226,13 +223,13 @@ h3,h5{
 
 .card.hover-card {
     border: none;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
 }
 
 .image-card-container:hover .hover-card {
     transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .card-img-top {
@@ -252,4 +249,94 @@ h3,h5{
 
 .btn-outline-primary:hover {
     transform: scale(1.05);
+}
+
+
+.movie-poster {
+    max-width: 300px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.rating-badge {
+    font-size: 1.2rem;
+    padding: 0.5rem 1rem;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+}
+
+.actor-item {
+    transition: transform 0.3s;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border-radius: 8px;
+}
+
+.actor-item:hover {
+    background-color: #f8f9fa;
+    transform: translateX(5px);
+}
+
+.actor-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.actor-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.actor-name {
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+}
+
+.actor-character {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.scrollable {
+    max-height: 500px;
+    /* Chiều cao tối đa của danh sách */
+    overflow-y: auto;
+    /* Thêm thanh cuộn dọc nếu vượt quá chiều cao */
+    padding-right: 10px;
+    /* Khoảng trống tránh đè thanh cuộn */
+}
+
+.actor-img {
+    max-width: 300px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.movie-card {
+    transition: transform 0.2s;
+    margin-bottom: 20px;
+}
+
+.movie-card:hover {
+    transform: translateY(-5px);
+}
+
+.movie-img {
+    height: 200px;
+    object-fit: cover;
+}
+
+.pagination {
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.bio-section {
+    background-color: #f8f9fa;
+    padding: 2rem;
+    border-radius: 8px;
+    margin: 2rem 0;
 }

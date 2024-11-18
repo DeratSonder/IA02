@@ -1,0 +1,86 @@
+<!DOCTYPE>
+<html>
+
+<body>
+    <div class="column mt-2">
+
+        <div class="row mb-5">
+            <div class="col-md-4 text-center">
+                <img :src="actor.image" alt="Marlon Brando" class="actor-img mb-3">
+            </div>
+            <div class="col-md-8">
+                <h1 class="display-4">{{actor?.name}}</h1>
+                <p class="lead">{{actor?.role}}</p>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Birth Date:</strong> {{formatDate(actor.birthday)}}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Awards:</strong> {{actor?.awards}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Biography Section -->
+        <div class="bio-section">
+            <h2 class="mb-4">Summary</h2>
+            <p class="lead">
+                {{actor?.summary}}
+            </p>
+        </div>
+
+        <h2 class="mb-4">Films</h2>
+        <div class="row" id="movies">
+
+            <div class="row">
+                <div class="col-md-4" v-for="movie in actorMovies" :key="movie.id">
+                    <div class="card movie-card">
+                        <img :src="movie.image" class="card-img-top movie-img" :alt="movie?.fullTitle">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ movie?.title }}</h5>
+                            <p class="card-text">{{ movie?.plot }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div v-if="total_pages > 1" class="d-flex justify-content-center mt-auto">
+            <ul class="pagination">
+                <!-- Previous button -->
+                <li :class="{ 'page-item': true, 'disabled': page <= 1 }">
+                    <a @click.prevent="page > 1 && updateData(searchQuery, page - 1)" class="page-link" href="#"
+                        aria-label="Previous" :style="{ cursor: page <= 1 ? 'not-allowed' : 'pointer' }">
+                        <span style="font-weight: bold;">&laquo;</span>
+                    </a>
+                </li>
+
+                <!-- Page numbers with ellipsis -->
+                <template v-for="pageNum in displayedPages">
+                    <li v-if="pageNum === '...'" :key="'ellipsis-' + pageNum" class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                    <li v-else :key="pageNum" :class="{ 'page-item': true, 'active': pageNum === page }">
+                        <a @click="updateData(searchQuery, pageNum)" class="page-link" href="#"
+                            :style="{ cursor: 'pointer' }">
+                            {{ pageNum }}
+                        </a>
+                    </li>
+                </template>
+
+                <!-- Next button -->
+                <li :class="{ 'page-item': true, 'disabled': page >= total_pages }">
+                    <a @click.prevent="page < total_pages && updateData(searchQuery, page + 1)" class="page-link"
+                        href="#" aria-label="Next" :style="{ cursor: page >= total_pages ? 'not-allowed' : 'pointer' }">
+                        <span style="font-weight: bold;">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</body>
+
+</html>

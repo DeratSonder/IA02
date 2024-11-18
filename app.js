@@ -1,4 +1,5 @@
-import { comHeader, comNav, comTopRevenue, comMostPopular, comTopRating, comFooter, comMainHome, comMainSearch } from "./layout.js"
+import { comHeader, comNav, comTopRevenue, comMostPopular, 
+    comTopRating, comFooter, comMainHome, comMainSearch, comMovieDetail, comActorDetail } from "./layout.js"
 import { computed } from "vue"
 import MovieDBProvider, * as DBProvier from './DBProvider.js'
 
@@ -11,6 +12,8 @@ export default {
             topRating: [],
             search: [],
             searchQuery: "",
+            movie: {},
+            actor: {},
             page: 1,
             per_page: 6,
             total_pages: 0,
@@ -28,6 +31,8 @@ export default {
             page: computed(() => this.page),
             total_pages: computed(() => this.total_pages),
             searchQuery: computed(() => this.searchQuery),
+            movie: computed(() => this.movie),
+            actor: computed(() => this.actor),
             content: computed(() => this.content)
         }
     },
@@ -103,6 +108,30 @@ export default {
                 his.content = 'comMainSearch';
                 this.search = [];
             }
+        },
+
+        async getMovie(id){
+            try {
+                const db = new MovieDBProvider();
+                const result = await db.fetch(`detail/movie/${id}`);
+                this.movie = result;
+                this.content = 'comMovieDetail';
+                console.log("Movie", this.movie);
+            } catch (error) {
+                console.error(error);
+            }
+        },
+
+        async getActor(id){
+            try {
+                const db = new MovieDBProvider();
+                const result = await db.fetch(`detail/name/${id}`);
+                this.actor = result;
+                console.log("Actor", this.actor);
+                this.content = 'comActorDetail';
+            } catch (error) {
+                console.error(error);
+            }
         }
 
     },
@@ -115,7 +144,9 @@ export default {
         comFooter,
         comTopRating,
         comMainHome,
-        comMainSearch
+        comMainSearch,
+        comMovieDetail,
+        comActorDetail
 
     },
 
@@ -130,7 +161,7 @@ export default {
         <comNav @onSearch="searchMovies" @backHome = "loadHomePage"/>
         
         <!-- Main -->
-        <component :is="content" @updateData="searchMovies"/>
+        <component :is="content" @updateData="searchMovies" @onClickItem = "getMovie" @onClickActor="getActor"/>
 
         <!-- Footer -->
         <comFooter/>
